@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useNotesApi from "@/hooks/useNotesApi";
 import type { Note } from "@/types";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,7 +14,7 @@ function NoteDetailPage() {
 
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getNotesById, updateNote } = useNotesApi();
+  const { getNotesById, updateNote, deleteNote } = useNotesApi();
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -53,6 +53,12 @@ function NoteDetailPage() {
     setUserEdits(false);
   };
 
+  const handleDelete = async () => {
+    if (!note) return;
+    const res = await deleteNote(note.id);
+    if (res) navigate(-1);
+  };
+
   if (!note) return <div>Note not found</div>;
 
   return (
@@ -64,6 +70,14 @@ function NoteDetailPage() {
           variant={"outline"}
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
+        </Button>
+        <Button
+          variant={"destructive"}
+          className="cursor-pointer"
+          onClick={handleDelete}
+        >
+          <Trash />
+          DELETE
         </Button>
       </div>
       <div className="flex flex-col gap-4">
@@ -91,3 +105,7 @@ function NoteDetailPage() {
 }
 
 export default NoteDetailPage;
+
+function deleteNote(id: string) {
+  throw new Error("Function not implemented.");
+}

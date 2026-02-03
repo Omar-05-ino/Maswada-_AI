@@ -83,11 +83,25 @@ function useNotesApi() {
     [getToken],
   );
 
+  const deleteNote = async (id: string) => {
+    const token = await getToken();
+    if (!token) return;
+
+    const response = await fetch(`${API_BASE_URL}/api/notes/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.ok;
+  };
+
   return {
     getAllNotes,
     createNote,
     getNotesById,
     updateNote,
+    deleteNote,
   };
 }
 
