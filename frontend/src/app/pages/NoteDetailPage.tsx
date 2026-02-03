@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 function NoteDetailPage() {
   const [note, setNote] = useState<Note | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [userEdits, setUserEdits] = useState(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -20,8 +20,6 @@ function NoteDetailPage() {
     const fetchNote = async () => {
       if (!id) return;
 
-      setIsLoading(true);
-
       try {
         const fetchedNote = await getNotesById(id);
         if (fetchedNote) {
@@ -29,8 +27,6 @@ function NoteDetailPage() {
         }
       } catch (error) {
         console.error("Error fetching note:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
 
@@ -43,25 +39,19 @@ function NoteDetailPage() {
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNote((prev) => prev && { ...prev, title: e.target.value });
+    setUserEdits(true);
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote((prev) => prev && { ...prev, content: e.target.value });
+    setUserEdits(true);
   };
 
   const handleSave = async () => {
     if (!note) return;
-    setIsLoading(true);
     await updateNote(note.id, note);
-    setIsLoading(false);
+    setUserEdits(false);
   };
-
-  if (isLoading)
-    return (
-      <div className="flex items-center justify-center py-32 text-muted-foreground animate-pulse">
-        ading note details...
-      </div>
-    );
 
   if (!note) return <div>Note not found</div>;
 
@@ -91,7 +81,11 @@ function NoteDetailPage() {
           onChange={handleContentChange}
         />
       </div>
-      <Button onClick={handleSave}>Save Note</Button>
+      <div className="flex items-center justify-end">
+        <Button onClick={handleSave} disabled={!userEdits}>
+          Save Note
+        </Button>
+      </div>
     </GlassCard>
   );
 }
