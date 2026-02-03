@@ -1,21 +1,22 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { AppLayout } from "@/app/layout/AppLayout"
-import { HomePage } from "@/app/pages/HomePage"
-import { NotFoundPage } from "@/app/pages/NotFoundPage"
-import { SignIn, SignUp } from '@clerk/clerk-react'
+import { AppLayout } from "@/app/layout/AppLayout";
+import { HomePage } from "@/app/pages/HomePage";
+import { NotFoundPage } from "@/app/pages/NotFoundPage";
+import SignInPage from "./pages/signInPage";
+import SignUpPage from "./pages/SignUpPage";
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route element={<AppLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }

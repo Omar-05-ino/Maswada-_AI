@@ -2,8 +2,21 @@ import { GlassCard } from "@/components/common/GlassCard";
 import { Button } from "@/components/ui/button";
 import { Plus, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
+import { useEffect, useState } from "react";
+import type { Note } from "@/types";
+import useNotesApi from "@/hooks/useNotesApi";
 export function HomePage() {
+  const [notes, setNotes] = useState<Note[]>([]);
+  const { getAllNotes } = useNotesApi();
+
+  useEffect(() => {
+    const fetchNotes = async () => {
+      const notes = await getAllNotes();
+      setNotes(notes);
+    };
+    fetchNotes();
+  }, [getAllNotes]);
+
   return (
     <div className="space-y-12">
       <GlassCard className="flex flex-col gap-4 px-4 py-10">
@@ -18,9 +31,11 @@ export function HomePage() {
           <Input placeholder="search notes" className="pl-8" />
         </div>
         <div className="flex flex-col gap-4">
-          <GlassCard className="p-4">My Notes</GlassCard>
-          <GlassCard className="p-4">My Notes</GlassCard>
-          <GlassCard className="p-4">My Notes</GlassCard>
+          {notes.map((note) => (
+            <GlassCard key={note.id} className="p-4">
+              <h2 className="text-xl font-bold">{note.title}</h2>
+            </GlassCard>
+          ))}
         </div>
       </GlassCard>
     </div>
