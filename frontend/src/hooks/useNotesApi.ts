@@ -1,5 +1,6 @@
-import type { Note } from "@/types";
+import type { Note, CreateNoteDTO } from "@/types";
 import { useAuth } from "@clerk/clerk-react";
+import { useCallback } from "react";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3001";
@@ -7,7 +8,7 @@ const API_BASE_URL =
 function useNotesApi() {
   const { getToken } = useAuth();
 
-  const getAllNotes = async () => {
+  const getAllNotes = useCallback(async () => {
     const token = await getToken();
     if (!token) {
       console.error("No token provided");
@@ -20,10 +21,34 @@ function useNotesApi() {
     });
     const data: { notes: Note[] } = await response.json();
     return data.notes;
-  };
+  }, [getToken]);
+
+  const createNote = useCallback(
+    async (note: CreateNoteDTO) => {
+      const token = await getToken();
+      if (!token) {
+        console.error("No token provided");
+        return;
+      }
+      const response = await fetch(`${API_BASE_URL}/api/notes`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(note),
+      });
+
+      const data: { note: Note } = await response.json();
+
+      return data.note;
+    },
+    [getToken],
+  );
 
   return {
     getAllNotes,
+    createNote,
   };
 }
 
