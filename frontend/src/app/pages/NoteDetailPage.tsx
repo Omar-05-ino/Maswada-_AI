@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useNotesApi from "@/hooks/useNotesApi";
 import type { Note } from "@/types";
-import { ArrowLeft, Trash } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { DeleteDialog } from "@/components/common/DeleteDialog";
 
 function NoteDetailPage() {
   const [note, setNote] = useState<Note | null>(null);
@@ -51,12 +53,14 @@ function NoteDetailPage() {
     if (!note) return;
     await updateNote(note.id, note);
     setUserEdits(false);
+    toast.success("Note updated successfully");
   };
 
   const handleDelete = async () => {
     if (!note) return;
     const res = await deleteNote(note.id);
     if (res) navigate(-1);
+    toast.success("Note deleted");
   };
 
   if (!note) return <div>Note not found</div>;
@@ -71,14 +75,12 @@ function NoteDetailPage() {
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
-        <Button
-          variant={"destructive"}
-          className="cursor-pointer"
-          onClick={handleDelete}
-        >
-          <Trash />
-          DELETE
-        </Button>
+        <DeleteDialog
+          handleDelete={handleDelete}
+          title="Delete Note"
+          description="Are you sure you want to delete this note?"
+          ButtomText="DELETE"
+        />
       </div>
       <div className="flex flex-col gap-4">
         <Input
@@ -96,7 +98,11 @@ function NoteDetailPage() {
         />
       </div>
       <div className="flex items-center justify-end">
-        <Button onClick={handleSave} disabled={!userEdits}>
+        <Button
+          onClick={handleSave}
+          disabled={!userEdits}
+          className="cursor-pointer"
+        >
           Save Note
         </Button>
       </div>
@@ -105,7 +111,3 @@ function NoteDetailPage() {
 }
 
 export default NoteDetailPage;
-
-function deleteNote(id: string) {
-  throw new Error("Function not implemented.");
-}
