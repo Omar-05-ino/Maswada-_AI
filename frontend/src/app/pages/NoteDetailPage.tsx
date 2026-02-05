@@ -5,18 +5,33 @@ import { Textarea } from "@/components/ui/textarea";
 import useNotesApi from "@/hooks/useNotesApi";
 import type { Note } from "@/types";
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
+import AutoSaveIndicator from "@/components/note/autoSaveIndicator";
+import useAutoSave from "@/hooks/useAutoSave";
 
 function NoteDetailPage() {
   const [note, setNote] = useState<Note | null>(null);
   const [userEdits, setUserEdits] = useState(false);
-
   const { id } = useParams();
   const navigate = useNavigate();
   const { getNotesById, updateNote, deleteNote } = useNotesApi();
+
+  const handleSave = useCallback(async () => {
+    if (!note) return;
+
+    await updateNote(note.id, note);
+    setUserEdits(false);
+    setAutosaveStatus("saved");
+  }, [note, updateNote]);
+
+  const { autosaveStatus, setAutosaveStatus } = useAutoSave({
+    note,
+    userEdits,
+    handleSave,
+  });
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -42,18 +57,13 @@ function NoteDetailPage() {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNote((prev) => prev && { ...prev, title: e.target.value });
     setUserEdits(true);
+    setAutosaveStatus("unsaved");
   };
 
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNote((prev) => prev && { ...prev, content: e.target.value });
     setUserEdits(true);
-  };
-
-  const handleSave = async () => {
-    if (!note) return;
-    await updateNote(note.id, note);
-    setUserEdits(false);
-    toast.success("Note updated successfully");
+    setAutosaveStatus("unsaved");
   };
 
   const handleDelete = async () => {
@@ -68,13 +78,16 @@ function NoteDetailPage() {
   return (
     <GlassCard className="p-4 flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <Button
-          onClick={hanleBack}
-          className="cursor-pointer"
-          variant={"outline"}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back
-        </Button>
+        <div className="flex item-center gap-2">
+          <Button
+            onClick={hanleBack}
+            className="cursor-pointer"
+            variant={"outline"}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back
+          </Button>
+          <AutoSaveIndicator AutoSaveStatus={autosaveStatus} />
+        </div>
         <DeleteDialog
           handleDelete={handleDelete}
           title="Delete Note"
@@ -96,15 +109,6 @@ function NoteDetailPage() {
           value={note.content || ""}
           onChange={handleContentChange}
         />
-      </div>
-      <div className="flex items-center justify-end">
-        <Button
-          onClick={handleSave}
-          disabled={!userEdits}
-          className="cursor-pointer"
-        >
-          Save Note
-        </Button>
       </div>
     </GlassCard>
   );
