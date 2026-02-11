@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useNotesApi from "@/hooks/useNotesApi";
 import type { Note } from "@/types";
-import { ArrowLeft, Book, Languages } from "lucide-react";
+import { ArrowLeft, Book, Languages, Pencil } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -13,6 +13,13 @@ import AutoSaveIndicator from "@/components/note/autoSaveIndicator";
 import useAutoSave from "@/hooks/useAutoSave";
 import useAIFeaturesAPI from "@/hooks/useAIFeaturesAPI";
 import { dirArabic } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function NoteDetailPage() {
   const [note, setNote] = useState<Note | null>(null);
@@ -20,8 +27,8 @@ function NoteDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getNotesById, updateNote, deleteNote } = useNotesApi();
-  const { translateNote ,summrize } = useAIFeaturesAPI();
-  
+  const { translateNote, summarize, changeTone } = useAIFeaturesAPI();
+
   const direction = useMemo(
     () => dirArabic(note?.content || ""),
     [note?.content],
@@ -97,16 +104,30 @@ function NoteDetailPage() {
 
   const hanleSummrize = async () => {
     if (!note) return;
-    const result = await summrize({ noteId: note.id });
+    const result = await summarize({ noteId: note.id });
     if (result) {
       setNote((prev) => prev && { ...prev, content: result });
       setUserEdits(true);
       setAutosaveStatus("unsaved");
-      toast.success("Note summrized");
+      toast.success("Note summarized");
       return;
     }
 
     toast.error("Failed to summrize note");
+  };
+
+  const handleToneChange = async (tone: "comedy" | "formal" | "casual") => {
+    if (!note) return;
+    const result = await changeTone({ mode: tone, text: note.content });
+    if (result) {
+      setNote((prev) => prev && { ...prev, content: result });
+      setUserEdits(true);
+      setAutosaveStatus("unsaved");
+      toast.success("Tone changed");
+      return;
+    }
+
+    toast.error("Failed to change tone");
   };
 
   if (!note) return <div>Note not found</div>;
@@ -140,6 +161,29 @@ function NoteDetailPage() {
           <Book />
           summrize
         </Button>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <Pencil />
+                Change Tone
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuGroup>
+                <DropdownMenuItem onClick={() => handleToneChange("comedy")}>
+                  comedy
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleToneChange("formal")}>
+                  formal
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleToneChange("casual")}>
+                  casual
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
       <div className="flex flex-col gap-4">
         <Input

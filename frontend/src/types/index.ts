@@ -37,3 +37,12 @@ export type SummireNoteDTO = {
 export type SummireNoteResponseDTO = {
   result: string;
 };
+
+export type ToneDTO = {
+  text: string;
+  mode: "comedy" | "formal" | "casual";
+};
+
+export type ToneResponseDTO = {
+  result: string;
+};
