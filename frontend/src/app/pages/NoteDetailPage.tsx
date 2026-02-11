@@ -152,33 +152,56 @@ function NoteDetailPage() {
           ButtomText="DELETE"
         />
       </div>
-      <div className="flex items-center gap-2">
-        <Button onClick={handleTranslate} className="cursor-pointer">
-          <Languages />
-          translate
+      <div className="grid grid-cols-2 gap-2 w-full p-2">
+        <Button
+          onClick={handleTranslate}
+          className="flex items-center justify-center gap-2 h-11 w-full"
+        >
+          <Languages size={18} />
+          <span className="text-sm">Translate</span>
         </Button>
-        <Button onClick={hanleSummrize} className="cursor-pointer">
-          <Book />
-          summrize
+
+        <Button
+          onClick={hanleSummrize}
+          className="flex items-center justify-center gap-2 h-11 w-full"
+        >
+          <Book size={18} />
+          <span className="text-sm">Summarize</span>
         </Button>
-        <div>
+
+        <div className="col-span-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <Pencil />
-                Change Tone
+              <Button
+                variant="outline"
+                className="flex items-center justify-center gap-2 h-11 w-full border-dashed"
+              >
+                <Pencil size={18} />
+                <span>Change Tone</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent>
+            <DropdownMenuContent
+              align="center"
+              className="w-[calc(100vw-2rem)]"
+            >
               <DropdownMenuGroup>
-                <DropdownMenuItem onClick={() => handleToneChange("comedy")}>
-                  comedy
+                <DropdownMenuItem
+                  onClick={() => handleToneChange("comedy")}
+                  className="py-3"
+                >
+                  Comedy
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleToneChange("formal")}>
-                  formal
+                <DropdownMenuItem
+                  onClick={() => handleToneChange("formal")}
+                  className="py-3"
+                >
+                  Formal
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => handleToneChange("casual")}>
-                  casual
+                <DropdownMenuItem
+                  onClick={() => handleToneChange("casual")}
+                  className="py-3"
+                >
+                  Casual
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
