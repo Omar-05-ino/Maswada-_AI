@@ -1,405 +1,448 @@
-# React 19 Full-Stack Template | قالب تطبيق متكامل
+# Maswada AI | مسودة
 
-**A learning template for building production-ready applications**
+**AI-Powered Note-Taking Application**
 
-This is the starter template for the Udemy course: **Learn React.js 19 with Cursor**
+A modern, full-stack note-taking application with AI-powered features built with React 19, TypeScript, and OpenAI. Create, edit, and enhance your notes with intelligent AI capabilities including summarization, rewriting, and translation.
 
-## About This Template
+![React](https://img.shields.io/badge/React-19.2-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)
+![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
-This template provides a clean, lean structure to help you learn how to build a modern, production-ready full-stack application from the ground up. Throughout the course, we'll build an AI-powered note-taking application with bilingual support (English/Arabic), authentication, and AI features.
+---
 
-The structure is intentionally simple and focused on learning best practices for:
-- Modern React 19 development
-- Full-stack TypeScript architecture  
-- Authentication and security
-- AI integration
-- Internationalization and accessibility
-- Production deployment strategies
+## 🌟 Features
 
-### What You'll Learn to Build
+### 📝 Core Functionality
 
-Throughout the course, you'll implement these production-ready features:
+- **Note Management**: Create, read, update, and delete notes with a clean, intuitive interface
+- **Secure Authentication**: User authentication and authorization powered by Clerk
+- **Real-time Updates**: Live note editing with instant saving
+- **Search**: Quickly find notes with built-in search functionality
 
-- 🔐 **Secure Authentication** - Learn Clerk-based authentication patterns
-- 📝 **Notes Management** - Master full CRUD operations with TypeScript
-- 🤖 **AI Integration** (OpenAI GPT-5-mini):
-  - **Summarize** - Generate intelligent summaries
-  - **Rewrite** - Improve text with 4 different modes
-  - **Translate** - Translate between English and Arabic
-- 🌍 **Internationalization** - Implement bilingual support with react-intl
-- ↔️ **RTL/LTR Support** - Handle bidirectional text properly
-- 🎨 **Modern UI** - Build responsive interfaces with Tailwind CSS v4
-- 🔄 **State Management** - Learn React 19 patterns and best practices
-- 🛡️ **Security** - Implement proper authentication and authorization
-- 🚀 **Deployment** - Prepare applications for production
+### 🤖 AI-Powered Features
 
-## Tech Stack
+Powered by OpenAI GPT-4 to enhance your note-taking experience:
 
-### Backend
-- **Runtime**: Node.js + TypeScript
-- **Framework**: Express.js
-- **Database**: SQLite with Sequelize ORM
-- **Authentication**: Clerk (token verification)
-- **Validation**: Zod
-- **AI**: OpenAI GPT-5-mini
+- **📊 Summarize**: Generate intelligent summaries of your notes
+- **✍️ Rewrite**: Improve your text with 4 different modes:
+  - **Clearer**: Make text more understandable
+  - **Shorter**: Condense content while preserving meaning
+  - **Formal**: Convert to professional tone
+  - **Casual**: Make content more conversational
+- **🌍 Translate**: Automatic language detection and translation between English and Arabic
 
-### Frontend
-- **Framework**: React 19 + TypeScript
-- **Build Tool**: Vite
-- **Routing**: React Router v7
-- **Authentication**: Clerk
-- **Styling**: Tailwind CSS v4
-- **i18n**: react-intl with RTL support
+### 🎨 Modern UI/UX
 
-## Project Structure
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **Glass Morphism**: Beautiful modern UI with glass card components
+- **Dark Theme**: Easy on the eyes with a sleek dark interface
+- **Smooth Animations**: Polished user experience with subtle transitions
+
+---
+
+## 🏗️ Tech Stack
+
+### **Backend**
+
+| Technology      | Purpose                          |
+| --------------- | -------------------------------- |
+| **Node.js 18+** | JavaScript runtime               |
+| **TypeScript**  | Type-safe development            |
+| **Express.js**  | Web framework                    |
+| **Sequelize**   | ORM for database management      |
+| **SQLite**      | Lightweight database             |
+| **Clerk**       | Authentication & user management |
+| **OpenAI API**  | AI features integration          |
+| **Zod**         | Request validation               |
+
+### **Frontend**
+
+| Technology          | Purpose                  |
+| ------------------- | ------------------------ |
+| **React 19**        | UI framework             |
+| **TypeScript**      | Type-safe development    |
+| **Vite 7**          | Build tool & dev server  |
+| **React Router v7** | Client-side routing      |
+| **Clerk React**     | Authentication UI        |
+| **Tailwind CSS v4** | Utility-first styling    |
+| **Radix UI**        | Accessible UI components |
+| **Lucide React**    | Icon library             |
+| **Sonner**          | Toast notifications      |
+
+---
+
+## 📁 Project Structure
 
 ```
-maswada-ai/
-├── backend/           # Express.js API server
+maswada-ai-template/
+│
+├── backend/                      # Express.js Backend
 │   ├── src/
-│   │   ├── config/    # Environment configuration
-│   │   ├── db/        # Database setup and sync
-│   │   ├── models/    # Sequelize models
-│   │   ├── middlewares/ # Auth, error handling
-│   │   ├── routes/    # API endpoints
-│   │   ├── services/  # Business logic (notes, ai, openai)
-│   │   ├── validators/ # Zod schemas
-│   │   ├── app.ts     # Express app setup
-│   │   └── server.ts  # Server entry point
+│   │   ├── config/               # Environment & configuration
+│   │   │   └── env.ts
+│   │   ├── db/                   # Database setup
+│   │   │   ├── sequelize.ts      # Sequelize instance
+│   │   │   └── sync.ts           # Database sync script
+│   │   ├── middlewares/          # Express middlewares
+│   │   │   ├── auth.ts           # Clerk authentication
+│   │   │   └── errorHandler.ts  # Global error handler
+│   │   ├── models/               # Sequelize models
+│   │   │   └── Note.ts           # Note model
+│   │   ├── routes/               # API routes
+│   │   │   ├── health.ts         # Health check endpoint
+│   │   │   ├── auth-test.ts      # Auth testing endpoint
+│   │   │   ├── notes.ts          # Notes CRUD endpoints
+│   │   │   └── ai.ts             # AI features endpoints
+│   │   ├── services/             # Business logic
+│   │   │   ├── notes.service.ts  # Notes operations
+│   │   │   ├── ai.service.ts     # AI features logic
+│   │   │   └── openai.service.ts # OpenAI API integration
+│   │   ├── validators/           # Zod validation schemas
+│   │   │   ├── notes.schema.ts
+│   │   │   └── ai.schema.ts
+│   │   ├── types/                # TypeScript types
+│   │   ├── app.ts                # Express app configuration
+│   │   └── server.ts             # Server entry point
+│   ├── data/                     # SQLite database files
+│   ├── .env                      # Environment variables
 │   └── package.json
 │
-├── frontend/          # React application
+├── frontend/                     # React Frontend
 │   ├── src/
-│   │   ├── app/       # Application core
-│   │   │   ├── App.tsx      # Main app component with routing
-│   │   │   ├── layout/      # Layout components (Header, Footer, AppLayout)
-│   │   │   └── pages/       # Page components
-│   │   ├── components/      # Reusable components
-│   │   │   ├── common/      # Common components (GlassCard)
-│   │   │   └── ui/          # UI library components
-│   │   ├── lib/       # Utilities
-│   │   ├── assets/    # Static assets
-│   │   ├── main.tsx   # Entry point
-│   │   └── index.css  # Global styles
+│   │   ├── app/                  # Application core
+│   │   │   ├── layout/           # Layout components
+│   │   │   │   ├── AppLayout.tsx # Main app layout
+│   │   │   │   └── Header.tsx    # Header with navigation
+│   │   │   ├── pages/            # Page components
+│   │   │   │   ├── HomePage.tsx  # Notes list page
+│   │   │   │   ├── NoteDetailPage.tsx # Note editor
+│   │   │   │   ├── SignInPage.tsx
+│   │   │   │   ├── SignUpPage.tsx
+│   │   │   │   └── NotFoundPage.tsx
+│   │   │   └── App.tsx           # App router
+│   │   ├── components/           # Reusable components
+│   │   │   ├── common/           # Common components
+│   │   │   │   ├── GlassCard.tsx # Glass morphism card
+│   │   │   │   └── ProtectedRoute.tsx # Auth guard
+│   │   │   ├── note/             # Note-specific components
+│   │   │   └── ui/               # UI library (buttons, inputs, etc.)
+│   │   ├── hooks/                # Custom React hooks
+│   │   │   ├── useNotesApi.ts    # Notes API operations
+│   │   │   └── useAiApi.ts       # AI API operations
+│   │   ├── lib/                  # Utilities
+│   │   ├── types/                # TypeScript types
+│   │   ├── assets/               # Static assets
+│   │   ├── index.css             # Global styles
+│   │   └── main.tsx              # App entry point
+│   ├── public/                   # Public assets
+│   ├── .env                      # Environment variables
 │   └── package.json
 │
-└── README.md          # This file
+├── README.md                     # This file
+└── SETUP.md                      # Detailed setup guide
 ```
 
-## Prerequisites
+---
 
-Before starting the course, ensure you have:
+## 🚀 Quick Start
 
-- Node.js 18+ and npm installed
-- A code editor (we recommend Cursor)
-- A Clerk account (free tier works)
-- An OpenAI API key (for AI features)
-- Basic knowledge of JavaScript/TypeScript and React
+### Prerequisites
 
-## Quick Start
+Before you begin, ensure you have:
 
-### Backend Setup
+- **Node.js 18+** and **npm** installed ([Download](https://nodejs.org/))
+- A **Clerk** account ([Sign up free](https://clerk.com))
+- An **OpenAI API** key ([Get key](https://platform.openai.com/api-keys))
 
-1. Navigate to backend directory:
-   ```bash
-   cd backend
-   ```
+### 1️⃣ Clone the Repository
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+git clone <repository-url>
+cd maswada-ai-template-main
+```
 
-3. Configure environment:
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your CLERK_SECRET_KEY
-   ```
+### 2️⃣ Backend Setup
 
-4. Initialize database:
-   ```bash
-   npm run db:sync
-   ```
+```bash
+# Navigate to backend directory
+cd backend
 
-5. Start development server:
-   ```bash
-   npm run dev
-   ```
+# Install dependencies
+npm install
 
-Backend will run on `http://localhost:3001`
+# Copy environment template
+cp .env.example .env
 
-### Frontend Setup
+# Edit .env file with your credentials:
+# - CLERK_PUBLISHABLE_KEY=pk_test_...
+# - CLERK_SECRET_KEY=sk_test_...
+# - OPENAI_API_KEY=sk-...
 
-1. Navigate to frontend directory:
-   ```bash
-   cd frontend
-   ```
+# Initialize database
+npm run db:sync
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+# Start development server
+npm run dev
+```
 
-3. Configure environment:
-   ```bash
-   cp .env.example .env
-   # Edit .env and add your VITE_CLERK_PUBLISHABLE_KEY
-   ```
+Backend will be running at **http://localhost:3001**
 
-4. Start development server:
-   ```bash
-   npm run dev
-   ```
+### 3️⃣ Frontend Setup
 
-Frontend will run on `http://localhost:5173`
+Open a new terminal window:
 
-### ✅ Phase A: Backend Foundation
-**Status**: COMPLETED ✓
+```bash
+# Navigate to frontend directory
+cd frontend
 
-- [x] Express.js setup with TypeScript
-- [x] Environment configuration (Clerk + OpenAI)
-- [x] Sequelize + SQLite setup
-- [x] Database models (Note)
-- [x] Error handling middleware
-- [x] CORS configuration
-- [x] Database sync script ready
+# Install dependencies
+npm install
 
-**Files**: `backend/src/{app.ts, server.ts, config/, db/, middlewares/errorHandler.ts}`
+# Copy environment template
+cp .env.example .env
+
+# Edit .env file with your Clerk publishable key:
+# - VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
+
+# Start development server
+npm run dev
+```
+
+Frontend will be running at **http://localhost:5173**
+
+### 4️⃣ Verify Installation
+
+1. **Backend**: Visit http://localhost:3001/health - should return status "ok"
+2. **Frontend**: Visit http://localhost:5173 - should see login page
+3. **Sign in**: Create an account and start taking notes!
+
+For detailed setup instructions, see [SETUP.md](./SETUP.md).
 
 ---
 
-### ✅ Phase B: Authentication Middleware
-**Status**: COMPLETED ✓
-
-- [x] Clerk SDK installed
-- [x] Auth middleware structure
-- [x] Token verification implementation with Clerk SDK
-- [x] Extract userId from JWT
-- [x] Protect routes with auth middleware
-- [x] Handle auth errors (401/403, expired tokens)
-- [x] Test endpoint (`GET /api/auth/me`)
-
-**Files**: `backend/src/middlewares/auth.ts`, `backend/src/routes/auth-test.ts`
-
-**Completed**: Real JWT verification using `clerkClient.verifyToken()`. All protected routes now require valid Clerk authentication.
-
----
-
-### ✅ Phase C: Notes CRUD + Validation
-**Status**: COMPLETED ✓ (Ready for Testing with Frontend)
-
-- [x] Zod validation schemas
-- [x] Notes service layer
-- [x] Notes routes (GET, POST, PATCH, DELETE)
-- [x] userId scoping implemented in service layer
-- [x] All endpoints protected by auth middleware
-
-**Files**: `backend/src/{routes/notes.ts, services/notes.service.ts, validators/notes.schema.ts}`
-
-**Testing Guide**: See `backend/TESTING.md` for API testing instructions.
-
----
-
-### ✅ Phase D: AI Endpoints + OpenAI Integration
-**Status**: COMPLETED ✓
-
-- [x] OpenAI service with GPT-5-mini
-- [x] AI service layer
-- [x] AI routes (summarize, rewrite, translate)
-- [x] Zod validation for AI requests
-- [x] Direct OpenAI SDK integration (no abstraction needed)
-
-**Files**: `backend/src/{routes/ai.ts, services/ai.service.ts, services/openai.service.ts, validators/ai.schema.ts}`
-
-**Completed**: Using GPT-5-mini for all AI features. Ready to test once auth is implemented.
-
----
-
-### ✅ Phase E: Frontend Routing + Clerk Integration
-**Status**: COMPLETED ✓
-
-- [x] Vite + React setup
-- [x] Tailwind CSS v4 configuration
-- [x] React Router v7 setup with routes
-- [x] Clerk provider integration
-- [x] Protected routes implementation
-- [x] Layout components with navigation
-- [x] Sign-in/sign-out buttons
-
-**Files**: `frontend/src/{App.tsx, components/layouts/, components/auth/}`
-
----
-
-### ✅ Phase F: Notes UI + API Integration
-**Status**: COMPLETED ✓
-
-- [x] API client with Clerk token integration
-- [x] NotesPage with list, delete functionality
-- [x] CreateNotePage with form validation
-- [x] NoteDetailPage with edit capability
-- [x] AI features integration (summarize, translate)
-- [x] Loading and error states throughout
-
-**Files**: `frontend/src/{lib/api-client.ts, hooks/useApiClient.ts, pages/}`
-
----
-
-### ✅ Phase G: Internationalization (i18n) + RTL
-**Status**: COMPLETED ✓
-
-- [x] LocaleContext setup
-- [x] Message structure (EN/AR)
-- [x] Comprehensive translation messages for all UI text
-- [x] Integrate react-intl
-- [x] Language switcher component in header
-- [x] RTL/LTR styling with `dir` attribute
-- [x] All pages translated (Home, Notes, Create, Detail)
-- [x] FormattedMessage components throughout
-
-**Files**: `frontend/src/{contexts/LocaleContext.tsx, i18n/messages.ts, components/LanguageSwitcher.tsx}`
-
----
-
-### ✅ Phase H: AI Features UI + Polish
-**Status**: COMPLETED ✓
-
-- [x] AI feature buttons in note detail page
-- [x] Summarize note UI with translated button
-- [x] Rewrite note with 4 mode selection (clearer, shorter, formal, casual)
-- [x] Translate note between EN/AR
-- [x] Display AI results with styled containers
-- [x] Handle AI errors gracefully
-- [x] Loading states for AI operations
-- [x] Responsive design with flex-wrap
-- [x] Dropdown menu for rewrite modes
-- [x] Fully translated UI
-
-**Files**: `frontend/src/pages/NoteDetailPage.tsx`
-
----
-
-## API Documentation
+## 🔌 API Endpoints
 
 ### Public Endpoints
 
-- `GET /health` - Health check
+| Method | Endpoint  | Description  |
+| ------ | --------- | ------------ |
+| `GET`  | `/health` | Health check |
 
-### Protected Endpoints (require Bearer token)
+### Protected Endpoints (Require Authentication)
 
-#### Notes
-- `GET /api/notes` - List all notes for user
-- `POST /api/notes` - Create new note
-- `GET /api/notes/:id` - Get single note
-- `PATCH /api/notes/:id` - Update note
-- `DELETE /api/notes/:id` - Delete note
+#### Notes API
 
-#### AI Features
-- `POST /api/ai/summarize` - Summarize text or note
-  ```json
-  { "noteId": "uuid" | "text": "content" }
-  ```
+| Method   | Endpoint         | Description        | Request Body                           |
+| -------- | ---------------- | ------------------ | -------------------------------------- |
+| `GET`    | `/api/notes`     | Get all user notes | -                                      |
+| `POST`   | `/api/notes`     | Create new note    | `{ title: string, content: string }`   |
+| `GET`    | `/api/notes/:id` | Get note by ID     | -                                      |
+| `PATCH`  | `/api/notes/:id` | Update note        | `{ title?: string, content?: string }` |
+| `DELETE` | `/api/notes/:id` | Delete note        | -                                      |
 
-- `POST /api/ai/rewrite` - Rewrite text in different style
-  ```json
-  { 
-    "noteId": "uuid" | "text": "content",
-    "mode": "shorter" | "clearer" | "formal" | "casual"
-  }
-  ```
+#### AI Features API
 
-- `POST /api/ai/translate` - Auto-detect and translate (EN↔AR)
-  ```json
-  { 
-    "noteId": "uuid" | "text": "content"
-  }
-  ```
+| Method | Endpoint            | Description    | Request Body                                                         |
+| ------ | ------------------- | -------------- | -------------------------------------------------------------------- |
+| `POST` | `/api/ai/summarize` | Summarize note | `{ noteId: string }` or `{ text: string }`                           |
+| `POST` | `/api/ai/rewrite`   | Rewrite note   | `{ noteId: string, mode: "clearer"\|"shorter"\|"formal"\|"casual" }` |
+| `POST` | `/api/ai/translate` | Translate note | `{ noteId: string }` or `{ text: string }`                           |
 
-## Data Model
+### Example API Call
 
-### Note
+```javascript
+// Get all notes
+const response = await fetch("http://localhost:3001/api/notes", {
+  headers: {
+    Authorization: `Bearer ${clerkToken}`,
+  },
+});
+const { notes } = await response.json();
+```
+
+---
+
+## 💾 Database Schema
+
+### Note Model
+
 ```typescript
 {
-  id: string;           // UUID
-  userId: string;       // Clerk user ID
-  title: string;
-  content: string;
-  language: 'en' | 'ar';
-  summary: string | null;
-  createdAt: Date;
-  updatedAt: Date;
+  id: string; // UUID primary key
+  userId: string; // Clerk user ID
+  title: string; // Note title
+  content: string; // Note content (markdown/text)
+  summary: string | null; // AI-generated summary
+  createdAt: Date; // Creation timestamp
+  updatedAt: Date; // Last update timestamp
 }
 ```
 
-## Development Guidelines
+---
 
-### Backend
-- All routes must verify Clerk tokens
-- All database queries must filter by `userId`
-- Use Zod for request validation
-- Centralized error handling
-- Keep business logic in service layer
-
-### Frontend
-- Use TypeScript strictly
-- All API calls through `apiClient`
-- Protected routes require authentication
-- Support both EN/AR in all UI
-- Responsive design (mobile-first)
-- Accessible components
-
-## Environment Variables
+## 🔧 Environment Variables
 
 ### Backend (.env)
-```
+
+```env
+# Server Configuration
 PORT=3001
 NODE_ENV=development
 FRONTEND_ORIGIN=http://localhost:5173
+
+# Clerk Authentication
 CLERK_PUBLISHABLE_KEY=pk_test_...
 CLERK_SECRET_KEY=sk_test_...
+
+# Database
 SQLITE_PATH=./data/maswada.db
+
+# OpenAI
 OPENAI_API_KEY=sk-...
 OPENAI_ORGANIZATION_ID=org-...  # Optional
 ```
 
 ### Frontend (.env)
-```
+
+```env
+# Clerk Authentication
 VITE_CLERK_PUBLISHABLE_KEY=pk_test_...
+
+# API Configuration
 VITE_API_BASE_URL=http://localhost:3001
 ```
 
-## Production Deployment
+---
 
-### Backend
-1. Build TypeScript: `npm run build`
-2. Set production environment variables
-3. Run database sync: `npm run db:sync`
-4. Start server: `npm start`
+## 🧪 Development
 
-### Frontend
-1. Build for production: `npm run build`
-2. Serve `dist/` directory with static file server
-3. Ensure environment variables are set at build time
+### Available Scripts
 
-## Learning Approach
+#### Backend
 
-This template includes a phased implementation plan (Phases A-H) that guides you through building the application step by step. Each phase builds upon the previous one, teaching you how to architect and implement a real-world application.
+```bash
+npm run dev       # Start development server with hot reload
+npm run build     # Compile TypeScript to JavaScript
+npm start         # Run production build
+npm run db:sync   # Initialize/sync database
+```
 
-**What You'll Build:**
-- Full-stack note-taking application with AI features
-- Secure authentication system
-- RESTful API with Express.js
-- Modern React 19 frontend
-- Bilingual support (English/Arabic)
-- AI integration with OpenAI
+#### Frontend
 
-## License
+```bash
+npm run dev       # Start Vite dev server
+npm run build     # Build for production
+npm run preview   # Preview production build
+npm run lint      # Run ESLint
+```
 
-MIT
+### Development Workflow
+
+1. Start both backend and frontend servers in separate terminals
+2. Make changes to the code
+3. Changes will hot-reload automatically
+4. Test your changes in the browser at http://localhost:5173
 
 ---
 
-**Getting Started:**
+## 🏭 Production Deployment
 
-Follow along with the Udemy course **Learn React.js 19 with Cursor** to build this application from scratch. The template provides the foundation - you'll implement the features through guided lessons.
+### Backend Deployment
 
-**Course Repository:** Use this template to start your own project and follow the implementation phases outlined above.
+```bash
+# Build TypeScript
+npm run build
+
+# Set production environment variables
+export NODE_ENV=production
+export CLERK_SECRET_KEY=sk_live_...
+export OPENAI_API_KEY=sk-...
+
+# Initialize database
+npm run db:sync
+
+# Start server
+npm start
+```
+
+### Frontend Deployment
+
+```bash
+# Build for production
+npm run build
+
+# The dist/ directory contains the static files
+# Deploy to any static hosting service (Vercel, Netlify, etc.)
+```
+
+**Note**: Make sure to set environment variables at build time for the frontend.
+
+---
+
+## 🔐 Security Features
+
+- ✅ **JWT-based authentication** with Clerk
+- ✅ **User-scoped data**: All queries filtered by userId
+- ✅ **Request validation** with Zod schemas
+- ✅ **Protected routes** on both frontend and backend
+- ✅ **CORS configuration** for allowed origins
+- ✅ **Environment variable security** (API keys never exposed to client)
+
+---
+
+## 🎨 UI Components
+
+The app uses a custom design system with:
+
+- **GlassCard**: Glass morphism effect containers
+- **Button**: Multiple variants and sizes
+- **Input**: Text input with consistent styling
+- **Alert Dialog**: Confirmation modals (Radix UI)
+- **User Button**: Clerk authentication widget
+- **Toast Notifications**: Success/error messages (Sonner)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- [React](https://react.dev/) - UI Framework
+- [Clerk](https://clerk.com/) - Authentication
+- [OpenAI](https://openai.com/) - AI Features
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Vite](https://vite.dev/) - Build Tool
+- [Sequelize](https://sequelize.org/) - ORM
+
+---
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+
+1. Check the [SETUP.md](./SETUP.md) for detailed setup instructions
+2. Review backend testing guide in `backend/TESTING.md`
+3. Open an issue on GitHub
+
+---
+
+**Built with ❤️ using React 19, TypeScript, and OpenAI**
+
+_Maswada (مسودة) means "draft" in Arabic - your intelligent drafting companion._

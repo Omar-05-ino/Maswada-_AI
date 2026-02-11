@@ -1,143 +1,416 @@
-# Maswada AI - Setup Instructions
+# 🚀 Setup Guide | دليل التثبيت
 
-## Quick Start Guide
+Complete step-by-step guide to set up Maswada AI on your local machine.
 
-### 1. Get API Credentials
+---
 
-#### Clerk (Required for Authentication)
-1. Go to [clerk.com](https://clerk.com) and create a free account
-2. Create a new application
-3. From the [Clerk Dashboard](https://dashboard.clerk.com), copy both keys:
-   - **Publishable Key** (starts with `pk_test_`) - Used in frontend
-   - **Secret Key** (starts with `sk_test_`) - Used in backend
+## 📋 Prerequisites
 
-#### OpenAI (Required for AI Features)
-1. Go to [OpenAI Platform](https://platform.openai.com/api-keys)
-2. Create an account or sign in
-3. Create a new API key
-4. Copy your **API Key** (starts with `sk-`)
-5. (Optional) If you have multiple organizations, get your **Organization ID** from [Organization Settings](https://platform.openai.com/account/organization) (starts with `org-`)
+Before you begin, make sure you have the following installed and ready:
 
-### 2. Backend Setup
+### Required Software
+
+- ✅ **Node.js 18+** - [Download here](https://nodejs.org/)
+- ✅ **npm** (comes with Node.js)
+- ✅ **Code Editor** (VS Code, Cursor, or your preferred editor)
+
+### Required API Keys
+
+You'll need accounts and API keys from these services:
+
+#### 1. Clerk (Authentication)
+
+Clerk provides user authentication and management for the application.
+
+- **Sign up**: [clerk.com](https://clerk.com) (Free tier available)
+- **Create application**: Go to [Clerk Dashboard](https://dashboard.clerk.com)
+- **Get your keys**:
+  - **Publishable Key** - Starts with `pk_test_...` (used in frontend)
+  - **Secret Key** - Starts with `sk_test_...` (used in backend)
+
+#### 2. OpenAI (AI Features)
+
+OpenAI powers the AI features (summarize, rewrite, translate).
+
+- **Sign up**: [OpenAI Platform](https://platform.openai.com/)
+- **Get API key**: [API Keys Page](https://platform.openai.com/api-keys)
+- **Your key**: Starts with `sk-...`
+- **Organization ID** (Optional): If you have multiple orgs - [Organization Settings](https://platform.openai.com/account/organization)
+
+---
+
+## 🔧 Installation Steps
+
+### Step 1: Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd maswada-ai-template-main
+```
+
+---
+
+### Step 2: Backend Setup
+
+#### 2.1 Install Dependencies
 
 ```bash
 cd backend
-
-# Install dependencies
 npm install
+```
 
-# Configure environment
+#### 2.2 Configure Environment Variables
+
+Create a `.env` file from the example:
+
+```bash
 cp .env.example .env
+```
 
-# Edit .env and set:
-# CLERK_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
-# CLERK_SECRET_KEY=sk_test_your_secret_key_here
-# OPENAI_API_KEY=sk-your_openai_api_key_here
-# OPENAI_ORGANIZATION_ID=org-your_org_id_here  (optional)
+Edit the `.env` file and add your credentials:
 
-# Initialize database
+```env
+# Server Configuration
+PORT=3001
+NODE_ENV=development
+FRONTEND_ORIGIN=http://localhost:5173
+
+# Clerk Authentication Keys
+CLERK_PUBLISHABLE_KEY=pk_test_YOUR_PUBLISHABLE_KEY_HERE
+CLERK_SECRET_KEY=sk_test_YOUR_SECRET_KEY_HERE
+
+# Database
+SQLITE_PATH=./data/maswada.db
+
+# OpenAI Configuration
+OPENAI_API_KEY=sk-YOUR_OPENAI_API_KEY_HERE
+OPENAI_ORGANIZATION_ID=org-YOUR_ORG_ID_HERE  # Optional
+```
+
+> **⚠️ Important**: Replace the placeholder values with your actual API keys from Clerk and OpenAI.
+
+#### 2.3 Initialize Database
+
+Run the database sync script to create tables:
+
+```bash
 npm run db:sync
+```
 
-# Start development server
+You should see output confirming the database tables were created.
+
+#### 2.4 Start Backend Server
+
+```bash
 npm run dev
 ```
 
-Backend will run on **http://localhost:3001**
+**Expected output:**
 
-### 3. Frontend Setup
+```
+Server running on http://localhost:3001
+Database connected successfully
+```
+
+✅ Backend is now running at **http://localhost:3001**
+
+---
+
+### Step 3: Frontend Setup
+
+Open a **new terminal window** (keep backend running).
+
+#### 3.1 Install Dependencies
 
 ```bash
 cd frontend
+npm install
+```
 
-# Install dependencies (already done if you followed along)
-# npm install
+#### 3.2 Configure Environment Variables
 
-# Configure environment
+Create a `.env` file from the example:
+
+```bash
 cp .env.example .env
+```
 
-# Edit .env and set:
-# VITE_CLERK_PUBLISHABLE_KEY=pk_test_your_publishable_key_here
+Edit the `.env` file:
 
-# Start development server
+```env
+# Clerk Authentication
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_YOUR_PUBLISHABLE_KEY_HERE
+
+# API Configuration
+VITE_API_BASE_URL=http://localhost:3001
+```
+
+> **📝 Note**: Use the **same Clerk Publishable Key** from the backend setup.
+
+#### 3.3 Start Frontend Server
+
+```bash
 npm run dev
 ```
 
-Frontend will run on **http://localhost:5173**
+**Expected output:**
 
-## Verification
+```
+VITE v7.x.x  ready in xxx ms
 
-### Test Backend
+➜  Local:   http://localhost:5173/
+➜  Network: use --host to expose
+```
+
+✅ Frontend is now running at **http://localhost:5173**
+
+---
+
+## ✅ Verify Installation
+
+### Test 1: Backend Health Check
+
+Open your browser or use curl:
 
 ```bash
 curl http://localhost:3001/health
 ```
 
-Should return:
+**Expected response:**
+
 ```json
 {
   "status": "ok",
-  "timestamp": "2026-01-14T...",
+  "timestamp": "2026-02-11T...",
   "service": "maswada-ai-backend"
 }
 ```
 
-### Test Frontend
+### Test 2: Frontend Access
 
-Open http://localhost:5173 in your browser. You should see the Maswada AI landing page.
+1. Open your browser and navigate to: **http://localhost:5173**
+2. You should see the Maswada AI sign-in page
+3. Click "Sign Up" to create a test account
+4. Complete the Clerk sign-up flow
+5. You should be redirected to the notes dashboard
 
-## Project Status
+### Test 3: Create a Note
 
-✅ **Backend**: Fully scaffolded and compiling
-- Express.js server with TypeScript
-- SQLite database with Sequelize
-- All routes defined (health, notes CRUD, AI endpoints)
-- Mock AI provider functional
-- Zod validation schemas ready
-- Error handling middleware in place
+1. After signing in, click the **"Create Note"** button
+2. Edit the note title and content
+3. Try the AI features:
+   - Click **"Summarize"** to generate a summary
+   - Click **"Rewrite"** and select a mode (Clearer, Shorter, Formal, Casual)
+   - Click **"Translate"** to translate the note
 
-✅ **Frontend**: Fully scaffolded and compiling
-- React 19 + Vite + TypeScript
-- Tailwind CSS v4 configured
-- Folder structure with page stubs
-- API client structure ready
-- i18n context prepared
-- Builds successfully
+If all tests pass, your installation is complete! 🎉
 
-⏳ **Next Steps**: Follow the phased implementation plan in README.md
+---
 
-## Common Issues
+## 🛠️ Development Workflow
 
-### Backend won't start
-- Make sure `CLERK_SECRET_KEY` is set in `backend/.env`
-- Check that port 3001 is not in use
-- Run `npm run db:sync` to initialize database
+### Running Both Servers
 
-### Frontend won't start
-- Make sure `VITE_CLERK_PUBLISHABLE_KEY` is set in `frontend/.env`
-- Check that port 5173 is not in use
-- Clear node_modules and reinstall if needed
+You need **two terminal windows**:
 
-### TypeScript errors
-- Run `npm run build` to check for compilation errors
-- Both projects should compile without errors
+**Terminal 1 - Backend:**
 
-## Development Workflow
+```bash
+cd backend
+npm run dev
+```
 
-1. Start backend: `cd backend && npm run dev`
-2. Start frontend: `cd frontend && npm run dev`
-3. Make changes and see them hot-reload
-4. Follow the implementation plan in README.md
+**Terminal 2 - Frontend:**
 
-## Implementation Order
+```bash
+cd frontend
+npm run dev
+```
 
-Follow the phases in order:
+### Making Changes
 
-1. **Phase B**: Implement Clerk authentication in backend
-2. **Phase C**: Test notes CRUD operations
-3. **Phase D**: Add real AI provider (optional, mock works)
-4. **Phase E**: Set up React Router and Clerk in frontend
-5. **Phase F**: Build notes UI and connect to API
-6. **Phase G**: Add internationalization (EN/AR)
-7. **Phase H**: Implement AI features UI
+- **Backend changes**: The server will auto-restart when you save files
+- **Frontend changes**: The browser will auto-refresh when you save files
 
-Good luck! 🚀
+---
+
+## ❗ Troubleshooting
+
+### Backend Won't Start
+
+**Problem**: `Error: Invalid Clerk credentials`
+
+**Solution**:
+
+- Make sure `CLERK_SECRET_KEY` is set correctly in `backend/.env`
+- Verify the key starts with `sk_test_` or `sk_live_`
+- Check for extra spaces or quotes in the `.env` file
+
+---
+
+**Problem**: `Error: Port 3001 already in use`
+
+**Solution**:
+
+```bash
+# Find the process using port 3001
+netstat -ano | findstr :3001
+
+# Kill the process (replace PID with actual process ID)
+taskkill /PID <PID> /F
+
+# Or change the port in backend/.env
+PORT=3002
+```
+
+---
+
+**Problem**: `Database error`
+
+**Solution**:
+
+```bash
+# Delete the database and reinitialize
+cd backend
+rm -rf data/maswada.db
+npm run db:sync
+```
+
+---
+
+### Frontend Won't Start
+
+**Problem**: `Error: Missing Clerk publishable key`
+
+**Solution**:
+
+- Ensure `VITE_CLERK_PUBLISHABLE_KEY` is set in `frontend/.env`
+- Verify the key starts with `pk_test_` or `pk_live_`
+- Restart the dev server after adding environment variables
+
+---
+
+**Problem**: `Error: Port 5173 already in use`
+
+**Solution**:
+
+```bash
+# Kill the process on port 5173
+netstat -ano | findstr :5173
+taskkill /PID <PID> /F
+```
+
+---
+
+**Problem**: Dependencies installation errors
+
+**Solution**:
+
+```bash
+# Clear npm cache and reinstall
+rm -rf node_modules package-lock.json
+npm cache clean --force
+npm install
+```
+
+---
+
+### Authentication Issues
+
+**Problem**: Can't sign in or sign up
+
+**Solution**:
+
+- Check that both `CLERK_PUBLISHABLE_KEY` values match (frontend and backend)
+- Verify your Clerk application is active in the dashboard
+- Check browser console for specific error messages
+- Try clearing browser cookies and cache
+
+---
+
+**Problem**: API requests return 401 Unauthorized
+
+**Solution**:
+
+- Sign out and sign in again to refresh the token
+- Check that backend `CLERK_SECRET_KEY` is correct
+- Verify CORS settings in `backend/src/app.ts`
+
+---
+
+### AI Features Not Working
+
+**Problem**: AI endpoints return errors
+
+**Solution**:
+
+- Verify `OPENAI_API_KEY` is set correctly in `backend/.env`
+- Check your OpenAI account has available credits
+- Review OpenAI API usage limits
+- Check backend console logs for specific OpenAI errors
+
+---
+
+## 📂 Project Status
+
+After successful setup, you should have:
+
+✅ **Backend Server** running on port 3001  
+✅ **Frontend Server** running on port 5173  
+✅ **SQLite Database** initialized with Notes table  
+✅ **Clerk Authentication** configured and working  
+✅ **OpenAI Integration** ready for AI features  
+✅ **CORS** configured for local development
+
+---
+
+## 🎯 Next Steps
+
+Now that your development environment is ready:
+
+1. **Explore the Code**:
+   - Review the project structure in [`README.md`](./README.md)
+   - Understand the backend routes in `backend/src/routes/`
+   - Explore React components in `frontend/src/`
+
+2. **Customize the App**:
+   - Modify the UI theme in `frontend/src/index.css`
+   - Add new features or endpoints
+   - Adjust AI prompts in `backend/src/services/openai.service.ts`
+
+3. **Test Features**:
+   - Create multiple notes
+   - Try different AI modes
+   - Test the search functionality
+
+4. **Prepare for Production**:
+   - Review deployment guide in [`README.md`](./README.md#-production-deployment)
+   - Set up production environment variables
+   - Configure production database
+
+---
+
+## 📚 Additional Resources
+
+- **Backend API Testing**: See `backend/TESTING.md` for API testing examples
+- **Backend AI Features**: See `backend/AI_FEATURES.md` for AI prompt details
+- **Frontend README**: See `frontend/README.md` for frontend-specific docs
+- **Backend README**: See `backend/README.md` for backend-specific docs
+
+---
+
+## 🆘 Need Help?
+
+If you encounter issues not covered here:
+
+1. Check the error messages in terminal/browser console
+2. Review the main [README.md](./README.md) for detailed documentation
+3. Verify all environment variables are set correctly
+4. Try restarting both servers
+5. Clear browser cache and node_modules if needed
+
+---
+
+**Happy Coding! 🚀**
+
+_Maswada AI - Your intelligent note-taking companion_
