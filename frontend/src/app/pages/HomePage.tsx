@@ -40,7 +40,7 @@ export function HomePage() {
       <GlassCard className="flex flex-col gap-4 px-4 py-10">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">My Notes</h1>
-          <Button onClick={handleCreateNotes}>
+          <Button onClick={handleCreateNotes} className="cursor-pointer">
             <Plus /> Creat Note
           </Button>
         </div>

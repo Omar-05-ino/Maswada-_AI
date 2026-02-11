@@ -6,6 +6,7 @@ import { NotFoundPage } from "@/app/pages/NotFoundPage";
 import SignUpPage from "./pages/SignUpPage";
 import NoteDetailPage from "./pages/NoteDetailPage";
 import SignInPage from "./pages/SignInPage";
+import ProtectedRoute from "@/components/common/ProtectedRoute";
 
 export default function App() {
   return (
@@ -13,7 +14,13 @@ export default function App() {
       <Routes>
         <Route path="/sign-in" element={<SignInPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route element={<AppLayout />}>
+        <Route
+          element={
+            <ProtectedRoute>
+              <AppLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="/" element={<HomePage />} />
           <Route path="/note/:id" element={<NoteDetailPage />} />
           <Route path="*" element={<NotFoundPage />} />
