@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 export function HomePage() {
   const { getAllNotes, createNote } = useNotesApi();
   const [notes, setNotes] = useState<Note[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +36,12 @@ export function HomePage() {
     navigate(`/note/${id}`);
   };
 
+  const filteredNotes = notes.filter(
+    (note) =>
+      note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      note.content.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   return (
     <div className="space-y-12">
       <GlassCard className="flex flex-col gap-4 px-4 py-10">
@@ -46,10 +53,15 @@ export function HomePage() {
         </div>
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input placeholder="search notes" className="pl-8" />
+          <Input
+            placeholder="search notes"
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <div className="flex flex-col gap-4">
-          {notes.map((note) => (
+          {filteredNotes.map((note) => (
             <GlassCard
               key={note.id}
               className="p-4 cursor-pointer"
