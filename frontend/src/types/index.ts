@@ -19,3 +19,21 @@ export type UpdateNoteDTO = {
 };
 
 export type AutoSaveStatus = "initial" | "saving" | "saved" | "unsaved";
+
+export type TranslateNoteDTO = {
+  noteId?: string;
+  text?: string;
+};
+
+export type TranslateNoteResponseDTO = {
+  result: string;
+};
+
+export type SummireNoteDTO = {
+  noteId?: string;
+  text?: string;
+};
+
+export type SummireNoteResponseDTO = {
+  result: string;
+};

@@ -4,13 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useNotesApi from "@/hooks/useNotesApi";
 import type { Note } from "@/types";
-import { ArrowLeft } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { ArrowLeft, Book, Languages } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { DeleteDialog } from "@/components/common/DeleteDialog";
 import AutoSaveIndicator from "@/components/note/autoSaveIndicator";
 import useAutoSave from "@/hooks/useAutoSave";
+import useAIFeaturesAPI from "@/hooks/useAIFeaturesAPI";
+import { dirArabic } from "@/lib/utils";
 
 function NoteDetailPage() {
   const [note, setNote] = useState<Note | null>(null);
@@ -18,6 +20,12 @@ function NoteDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getNotesById, updateNote, deleteNote } = useNotesApi();
+  const { translateNote ,summrize } = useAIFeaturesAPI();
+  
+  const direction = useMemo(
+    () => dirArabic(note?.content || ""),
+    [note?.content],
+  );
 
   const handleSave = useCallback(async () => {
     if (!note) return;
@@ -73,6 +81,34 @@ function NoteDetailPage() {
     toast.success("Note deleted");
   };
 
+  const handleTranslate = async () => {
+    if (!note) return;
+    const result = await translateNote({ noteId: note.id });
+    if (result) {
+      setNote((prev) => prev && { ...prev, content: result });
+      setUserEdits(true);
+      setAutosaveStatus("unsaved");
+      toast.success("Note translated");
+      return;
+    }
+
+    toast.error("Failed to translate note");
+  };
+
+  const hanleSummrize = async () => {
+    if (!note) return;
+    const result = await summrize({ noteId: note.id });
+    if (result) {
+      setNote((prev) => prev && { ...prev, content: result });
+      setUserEdits(true);
+      setAutosaveStatus("unsaved");
+      toast.success("Note summrized");
+      return;
+    }
+
+    toast.error("Failed to summrize note");
+  };
+
   if (!note) return <div>Note not found</div>;
 
   return (
@@ -95,6 +131,16 @@ function NoteDetailPage() {
           ButtomText="DELETE"
         />
       </div>
+      <div className="flex items-center gap-2">
+        <Button onClick={handleTranslate} className="cursor-pointer">
+          <Languages />
+          translate
+        </Button>
+        <Button onClick={hanleSummrize} className="cursor-pointer">
+          <Book />
+          summrize
+        </Button>
+      </div>
       <div className="flex flex-col gap-4">
         <Input
           placeholder="Title"
@@ -103,6 +149,7 @@ function NoteDetailPage() {
           onChange={handleTitleChange}
         />
         <Textarea
+          dir={direction}
           rows={20}
           className="bg-transparent dark:bg-transparent border-none focus-visible:ring-0 min-h-[500px]"
           placeholder="Content"
